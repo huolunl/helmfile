@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -1018,6 +1019,10 @@ func action(do func(*app.App, configImpl) error) func(*cli.Context) error {
 		}
 		a := app.NewWithHelmExtra(conf, helmExtra...)
 		if err := do(a, conf); err != nil {
+			if err != nil {
+				//todo err type
+				err = errors.New(err.Error())
+			}
 			return toCliError(implCtx, err)
 		}
 
@@ -1038,8 +1043,8 @@ func toCliError(c *cli.Context, err error) error {
 			return cli.NewExitError(e.Error(), 1)
 		case *app.Error:
 			return cli.NewExitError(e.Error(), e.Code())
-		default:
-			panic(fmt.Errorf("BUG: please file an github issue for this unhandled error: %T: %v", e, e))
+			//default:
+			//	panic(fmt.Errorf("BUG: please file an github issue for this unhandled error: %T: %v", e, e))
 		}
 	}
 	return err

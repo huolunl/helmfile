@@ -1862,10 +1862,10 @@ func (st *HelmState) DiffReleases(helm helmexec.Interface, additionalValues []st
 				if prep.upgradeDueToSkippedDiff {
 					results <- diffResult{release, &ReleaseError{ReleaseSpec: release, err: nil, Code: HelmDiffExitCodeChanged}, buf}
 				} else if err := helm.DiffRelease(st.createHelmContextWithWriter(release, buf), release.Name, normalizeChart(st.basePath, release.Chart), suppressDiff, flags...); err != nil {
-					switch err.(type) {
+					switch e := err.(type) {
 					case helmv3.PluginError:
 						// Propagate any non-zero exit status from the external command like `helm` that is failed under the hood
-						results <- diffResult{release, &ReleaseError{release, err, 2}, buf}
+						results <- diffResult{release, &ReleaseError{release, err, e.Code}, buf}
 					default:
 						results <- diffResult{release, &ReleaseError{release, err, 0}, buf}
 					}
