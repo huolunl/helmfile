@@ -1,3 +1,3 @@
 service:
-  port: {{.Values.service.port}}
-replicaCount: {{.Values.replicaCount}}
+  port: {{ .Values.service.port | quote}}
+replicaCount: {{ .Values.replicaCount | quote}}

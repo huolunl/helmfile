@@ -12,6 +12,7 @@ import (
 	"sync"
 
 	"github.com/Masterminds/semver/v3"
+	helmv3 "github.com/huolunl/helm/v3/pkg/helm"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -84,7 +85,7 @@ func getHelmVersion(helmBinary string, runner Runner) (semver.Version, error) {
 }
 
 // New for running helm commands
-func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, extra... string) *execer {
+func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, extra ...string) *execer {
 	// TODO: proper error handling
 	version, err := getHelmVersion(helmBinary, runner)
 	if err != nil {
@@ -97,7 +98,7 @@ func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runne
 		kubeContext:      kubeContext,
 		runner:           runner,
 		decryptedSecrets: make(map[string]*decryptedSecret),
-		extra:  extra,
+		extra:            extra,
 	}
 }
 
@@ -405,14 +406,10 @@ func (helm *execer) DiffRelease(context HelmContext, name, chart string, suppres
 		}
 	}
 	if detailedExitcodeEnabled {
-		switch e := err.(type) {
-		case ExitError:
-			if e.ExitStatus() == 2 {
-				if !(suppressDiff) {
-					helm.write(context.Writer, out)
-				}
-				return err
-			}
+		switch err.(type) {
+		case helmv3.PluginError:
+			helm.write(context.Writer, out)
+			return err
 		}
 	} else if !(suppressDiff) {
 		helm.write(context.Writer, out)
@@ -496,7 +493,7 @@ func (helm *execer) TestRelease(context HelmContext, name string, flags ...strin
 func (helm *execer) exec(args []string, env map[string]string) ([]byte, error) {
 	cmdargs := args
 	if len(helm.extra) > 0 {
-		cmdargs = append(cmdargs, helm.extra...)
+		cmdargs = append(helm.extra, cmdargs...)
 	}
 	if helm.kubeContext != "" {
 		cmdargs = append([]string{"--kube-context", helm.kubeContext}, cmdargs...)
@@ -510,7 +507,9 @@ func (helm *execer) exec(args []string, env map[string]string) ([]byte, error) {
 func (helm *execer) execStdIn(args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
 	cmdargs := args
 	if len(helm.extra) > 0 {
-		cmdargs = append(cmdargs, helm.extra...)
+		//cmdargs = append(cmdargs, helm.extra...)
+		cmdargs = append(helm.extra, cmdargs...)
+
 	}
 	if helm.kubeContext != "" {
 		cmdargs = append([]string{"--kube-context", helm.kubeContext}, cmdargs...)

@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
-	github.com/Masterminds/sprig/v3 v3.2.1
+	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/aryann/difflib v0.0.0-20170710044230-e206f873d14a
 	github.com/davecgh/go-spew v1.1.1
 	github.com/frankban/quicktest v1.11.2 // indirect
@@ -17,6 +17,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.6.3 // indirect
 	github.com/hashicorp/go-version v1.2.1
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
+	github.com/huolunl/helm/v3 v3.6.5
 	github.com/imdario/mergo v0.3.11
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kylelemons/godebug v1.1.0
@@ -24,7 +25,7 @@ require (
 	github.com/mattn/go-isatty v0.0.12
 	github.com/pierrec/lz4 v2.3.0+incompatible // indirect
 	github.com/r3labs/diff v1.1.0
-	github.com/spf13/cobra v1.1.1
+	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.7.0
 	github.com/tatsushid/go-prettytable v0.0.0-20141013043238-ed2d14c29939
 	github.com/urfave/cli v1.22.5
@@ -35,8 +36,9 @@ require (
 	go.uber.org/zap v1.16.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gopkg.in/square/go-jose.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v2 v2.3.0
+	gopkg.in/yaml.v2 v2.4.0
 	gotest.tools v2.2.0+incompatible
 	gotest.tools/v3 v3.0.3
-	k8s.io/apimachinery v0.19.3
+	k8s.io/apimachinery v0.21.0
+	rsc.io/letsencrypt v0.0.3 // indirect
 )

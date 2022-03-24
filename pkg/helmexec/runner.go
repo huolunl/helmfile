@@ -5,12 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"syscall"
 
+	"github.com/huolunl/helm/v3/pkg/helm"
 	"go.uber.org/zap"
 )
 
@@ -18,6 +18,10 @@ import (
 type Runner interface {
 	Execute(cmd string, args []string, env map[string]string) ([]byte, error)
 	ExecuteStdIn(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error)
+}
+type RunnerSingleProcess interface {
+	ExecuteSingleProcess(cmd string, args []string, env map[string]string) ([]byte, error)
+	ExecuteStdInSingleProcess(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error)
 }
 
 // ShellRunner implemention for shell commands
@@ -29,23 +33,24 @@ type ShellRunner struct {
 
 // Execute a shell command
 func (shell ShellRunner) Execute(cmd string, args []string, env map[string]string) ([]byte, error) {
-	preparedCmd := exec.Command(cmd, args...)
-	preparedCmd.Dir = shell.Dir
-	preparedCmd.Env = mergeEnv(os.Environ(), env)
-	return Output(preparedCmd, &logWriterGenerator{
-		log: shell.Logger,
-	})
+	return helm.Exec(args...)
+
 }
 
 // Execute a shell command
 func (shell ShellRunner) ExecuteStdIn(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
-	preparedCmd := exec.Command(cmd, args...)
-	preparedCmd.Dir = shell.Dir
-	preparedCmd.Env = mergeEnv(os.Environ(), env)
-	preparedCmd.Stdin = stdin
-	return Output(preparedCmd, &logWriterGenerator{
-		log: shell.Logger,
-	})
+	return helm.Exec(args...)
+
+}
+
+// Execute a shell command
+func (shell ShellRunner) ExecuteSingleProcess(cmd string, args []string, env map[string]string) ([]byte, error) {
+	return helm.Exec(args...)
+}
+
+// Execute a shell command
+func (shell ShellRunner) ExecuteStdInSingleProcess(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
+	return helm.Exec(args...)
 }
 
 func Output(c *exec.Cmd, logWriterGenerators ...*logWriterGenerator) ([]byte, error) {

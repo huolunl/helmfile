@@ -38,9 +38,10 @@ func configureLogging(c *cli.Context) error {
 
 const (
 	HelmExtra = "Helm_Extra"
-	AppName = "helmfile"
+	AppName   = "helmfile"
 )
-func exec(extra []string,args... string) {
+
+func exec(extra []string, args ...string) {
 	os.Args = args
 	cliApp := cli.NewApp()
 	cliApp.Metadata = map[string]interface{}{
@@ -737,9 +738,9 @@ func exec(extra []string,args... string) {
 	}
 }
 
-func Exec()  {
-	exec([]string{"--kube-token","eyJhbGciOiJSUzI1NiIsImtpZCI6InM3a3NnUVdudUFJTVNNTmtaWlA2MmdyS0VGUnkteVhyRDBVbWpNeXJ6VkUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJuaWthIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im5pa2EtdG9rZW4tc2hrcmwiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoibmlrYSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjI0MjJiMTg4LWRmNjAtNDMyMi1iNmFiLWExNzEwZTlhZDZlZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpuaWthOm5pa2EifQ.TqoCWT2euXp1BTbapWh6MaJE9Tqa21sci4LbRMG2Y9Vwg-C_hCL9vDXzVOlfHUFk8-VNc-qZE4Ga2lqsi89z3BO-dddoTKEeznSFetNYksVWPa8rbPI7yOX4_ZhfPbOUYvwltCC-KnLSW1uf5Mu1MchWrSMO0zXey4GbL4T7nb0VNBDebRm6wQLwwukWNSBTT_vv4GK-b6mv1QNjn7hiIz1LuvPuuIqKpBZkAw7tA3dlnsk4MbNJGNvhcxlfEqIn0xjA_8sYCiCZbhaBGqvPAIsUY-Sj4yPmDTeWJvWv66dl_CCTfL0Alzn2zzZrETZ-TVAHdwOiceV5gOYApb4IYQ",
-		"--kube-apiserver","https://172.29.2.206:6443","--kube-ca-file","/Users/huolun/.kube/ca.crt"},"helmfile","-f","/Users/huolun/project/geekops/helmfile/examples/test/helmfile.yaml","apply")
+func Exec() {
+	exec([]string{"--kube-token", "eyJhbGciOiJSUzI1NiIsImtpZCI6InM3a3NnUVdudUFJTVNNTmtaWlA2MmdyS0VGUnkteVhyRDBVbWpNeXJ6VkUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJuaWthIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im5pa2EtdG9rZW4tc2hrcmwiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoibmlrYSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjI0MjJiMTg4LWRmNjAtNDMyMi1iNmFiLWExNzEwZTlhZDZlZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpuaWthOm5pa2EifQ.TqoCWT2euXp1BTbapWh6MaJE9Tqa21sci4LbRMG2Y9Vwg-C_hCL9vDXzVOlfHUFk8-VNc-qZE4Ga2lqsi89z3BO-dddoTKEeznSFetNYksVWPa8rbPI7yOX4_ZhfPbOUYvwltCC-KnLSW1uf5Mu1MchWrSMO0zXey4GbL4T7nb0VNBDebRm6wQLwwukWNSBTT_vv4GK-b6mv1QNjn7hiIz1LuvPuuIqKpBZkAw7tA3dlnsk4MbNJGNvhcxlfEqIn0xjA_8sYCiCZbhaBGqvPAIsUY-Sj4yPmDTeWJvWv66dl_CCTfL0Alzn2zzZrETZ-TVAHdwOiceV5gOYApb4IYQ",
+		"--kube-apiserver", "https://172.29.2.206:6443", "--kube-ca-file", "/Users/huolun/.kube/ca.crt", "--debug"}, "helmfile", "-f", "/Users/huolun/project/geekops/helmfile/examples/test/helmfile.yaml", "apply")
 }
 
 type configImpl struct {
@@ -1012,11 +1013,11 @@ func action(do func(*app.App, configImpl) error) func(*cli.Context) error {
 		if err != nil {
 			return err
 		}
-		helmExtra,ok:= conf.c.App.Metadata[HelmExtra].([]string)
-		if !ok{
+		helmExtra, ok := conf.c.App.Metadata[HelmExtra].([]string)
+		if !ok {
 			log.Println("no helm extra")
 		}
-		a := app.NewWithHelmExtra(conf,helmExtra...)
+		a := app.NewWithHelmExtra(conf, helmExtra...)
 		if err := do(a, conf); err != nil {
 			return toCliError(implCtx, err)
 		}

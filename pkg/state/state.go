@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	helmv3 "github.com/huolunl/helm/v3/pkg/helm"
 	"io"
 	"io/ioutil"
 	"os"
@@ -1861,10 +1862,10 @@ func (st *HelmState) DiffReleases(helm helmexec.Interface, additionalValues []st
 				if prep.upgradeDueToSkippedDiff {
 					results <- diffResult{release, &ReleaseError{ReleaseSpec: release, err: nil, Code: HelmDiffExitCodeChanged}, buf}
 				} else if err := helm.DiffRelease(st.createHelmContextWithWriter(release, buf), release.Name, normalizeChart(st.basePath, release.Chart), suppressDiff, flags...); err != nil {
-					switch e := err.(type) {
-					case helmexec.ExitError:
+					switch err.(type) {
+					case helmv3.PluginError:
 						// Propagate any non-zero exit status from the external command like `helm` that is failed under the hood
-						results <- diffResult{release, &ReleaseError{release, err, e.ExitStatus()}, buf}
+						results <- diffResult{release, &ReleaseError{release, err, 2}, buf}
 					default:
 						results <- diffResult{release, &ReleaseError{release, err, 0}, buf}
 					}
