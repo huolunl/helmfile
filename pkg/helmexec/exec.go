@@ -33,6 +33,7 @@ type execer struct {
 	decryptedSecretMutex sync.Mutex
 	decryptedSecrets     map[string]*decryptedSecret
 	writeTempFile        func([]byte) (string, error)
+	writer               io.Writer
 }
 
 func NewLogger(writer io.Writer, logLevel string) *zap.SugaredLogger {
@@ -85,7 +86,7 @@ func getHelmVersion(helmBinary string, runner Runner) (semver.Version, error) {
 }
 
 // New for running helm commands
-func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, extra ...string) *execer {
+func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, writer io.Writer, extra ...string) *execer {
 	// TODO: proper error handling
 	version, err := getHelmVersion(helmBinary, runner)
 	if err != nil {
@@ -99,6 +100,7 @@ func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runne
 		runner:           runner,
 		decryptedSecrets: make(map[string]*decryptedSecret),
 		extra:            extra,
+		writer:           writer,
 	}
 }
 
@@ -501,6 +503,7 @@ func (helm *execer) exec(args []string, env map[string]string) ([]byte, error) {
 	cmd := fmt.Sprintf("exec: %s %s", helm.helmBinary, strings.Join(cmdargs, " "))
 	helm.logger.Debug(cmd)
 	outBytes, err := helm.runner.Execute(helm.helmBinary, cmdargs, env)
+	helm.writer.Write(outBytes)
 	return outBytes, err
 }
 
@@ -538,7 +541,7 @@ func (helm *execer) info(out []byte) {
 func (helm *execer) write(w io.Writer, out []byte) {
 	if len(out) > 0 {
 		if w == nil {
-			w = os.Stdout
+			w = helm.writer
 		}
 		fmt.Fprintf(w, "%s\n", out)
 	}

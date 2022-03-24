@@ -1017,7 +1017,7 @@ func action(do func(*app.App, configImpl) error) func(*cli.Context) error {
 		if !ok {
 			log.Println("no helm extra")
 		}
-		a := app.NewWithHelmExtra(conf, helmExtra...)
+		a := app.NewWithHelmExtra(conf, conf.c.App.Writer, helmExtra...)
 		if err := do(a, conf); err != nil {
 			if err != nil {
 				//todo err type

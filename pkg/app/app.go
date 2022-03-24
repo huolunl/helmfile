@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -55,7 +56,8 @@ type App struct {
 
 	helms      map[helmKey]helmexec.Interface
 	helmsMutex sync.Mutex
-	Extra []string
+	Extra      []string
+	Writer     io.Writer
 }
 
 type HelmRelease struct {
@@ -86,7 +88,7 @@ func New(conf ConfigProvider) *App {
 		//}),
 	})
 }
-func NewWithHelmExtra(conf ConfigProvider,extra... string) *App {
+func NewWithHelmExtra(conf ConfigProvider, writer io.Writer, extra ...string) *App {
 	return Init(&App{
 		OverrideKubeContext: conf.KubeContext(),
 		OverrideHelmBinary:  conf.HelmBinary(),
@@ -102,7 +104,8 @@ func NewWithHelmExtra(conf ConfigProvider,extra... string) *App {
 		//helmExecer: helmexec.New(conf.HelmBinary(), conf.Logger(), conf.KubeContext(), &helmexec.ShellRunner{
 		//	Logger: conf.Logger(),
 		//}),
-		Extra: extra,
+		Extra:  extra,
+		Writer: writer,
 	})
 }
 
@@ -766,7 +769,7 @@ func (a *App) getHelm(st *state.HelmState) helmexec.Interface {
 	if _, ok := a.helms[key]; !ok {
 		a.helms[key] = helmexec.New(bin, a.Logger, kubectx, &helmexec.ShellRunner{
 			Logger: a.Logger,
-		},a.Extra...)
+		}, a.Writer, a.Extra...)
 	}
 
 	return a.helms[key]
