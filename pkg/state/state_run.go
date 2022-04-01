@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/roboll/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/helmexec"
 	"github.com/variantdev/dag/pkg/dag"
 )
 
@@ -250,7 +250,7 @@ func GroupReleasesByDependency(releases []Release, opts PlanOptions) ([][]Releas
 
 		// Make the helmfile behavior deterministic for reproducibility and ease of testing
 		// We try to keep the order of definitions to keep backward-compatibility
-		// See https://github.com/roboll/helmfile/issues/988
+		// See https://github.com/huolunl/helmfile/issues/988
 		sort.Slice(idsInGroup, func(i, j int) bool {
 			ii := idToIndex[idsInGroup[i]]
 			ij := idToIndex[idsInGroup[j]]

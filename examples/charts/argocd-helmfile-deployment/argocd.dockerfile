@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Download helmfile
-RUN wget https://github.com/roboll/helmfile/releases/download/v0.138.7/helmfile_linux_amd64 && \
+RUN wget https://github.com/huolunl/helmfile/releases/download/v0.138.7/helmfile_linux_amd64 && \
     mv helmfile_linux_amd64 /usr/local/bin/helmfile && \
     chmod a+x /usr/local/bin/helmfile
 

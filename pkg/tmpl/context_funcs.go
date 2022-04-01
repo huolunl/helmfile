@@ -11,7 +11,7 @@ import (
 	"text/template"
 
 	"github.com/ghodss/yaml"
-	"github.com/roboll/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/helmexec"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -99,7 +99,7 @@ func (c *Context) Exec(command string, args []interface{}, inputs ...string) (st
 
 	g.Go(func() error {
 		// We use CombinedOutput to produce helpful error messages
-		// See https://github.com/roboll/helmfile/issues/1158
+		// See https://github.com/huolunl/helmfile/issues/1158
 		bs, err := helmexec.Output(cmd)
 		if err != nil {
 			return err

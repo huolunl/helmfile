@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/roboll/helmfile/pkg/remote"
+	"github.com/huolunl/helmfile/pkg/remote"
 
-	"github.com/roboll/helmfile/pkg/helmexec"
-	"github.com/roboll/helmfile/pkg/state"
-	"github.com/roboll/helmfile/pkg/testhelper"
+	"github.com/huolunl/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/state"
+	"github.com/huolunl/helmfile/pkg/testhelper"
 
 	"gopkg.in/yaml.v2"
 )

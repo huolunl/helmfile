@@ -27,15 +27,15 @@ To avoid upgrades for each iteration of `helm`, the `helmfile` executable delega
 
 **Declarative**: Write, version-control, apply the desired state file for visibility and reproducibility.
 
-**Modules**: Modularize common patterns of your infrastructure, distribute it via Git, S3, etc. to be reused across the entire company (See [#648](https://github.com/roboll/helmfile/pull/648))
+**Modules**: Modularize common patterns of your infrastructure, distribute it via Git, S3, etc. to be reused across the entire company (See [#648](https://github.com/huolunl/helmfile/pull/648))
 
-**Versatility**: Manage your cluster consisting of charts, [kustomizations](https://github.com/kubernetes-sigs/kustomize), and directories of Kubernetes resources, turning everything to Helm releases (See [#673](https://github.com/roboll/helmfile/pull/673))
+**Versatility**: Manage your cluster consisting of charts, [kustomizations](https://github.com/kubernetes-sigs/kustomize), and directories of Kubernetes resources, turning everything to Helm releases (See [#673](https://github.com/huolunl/helmfile/pull/673))
 
-**Patch**: JSON/Strategic-Merge Patch Kubernetes resources before `helm-install`ing, without forking upstream charts (See [#673](https://github.com/roboll/helmfile/pull/673))
+**Patch**: JSON/Strategic-Merge Patch Kubernetes resources before `helm-install`ing, without forking upstream charts (See [#673](https://github.com/huolunl/helmfile/pull/673))
 
 ## Configuration
 
-**CAUTION**: This documentation is for the development version of Helmfile. If you are looking for the documentation for any of releases, please switch to the corresponding release tag like [v0.92.1](https://github.com/roboll/helmfile/tree/v0.92.1).
+**CAUTION**: This documentation is for the development version of Helmfile. If you are looking for the documentation for any of releases, please switch to the corresponding release tag like [v0.92.1](https://github.com/huolunl/helmfile/tree/v0.92.1).
 
 The default name for a helmfile is `helmfile.yaml`:
 
@@ -116,7 +116,7 @@ helmDefaults:
   # if used with charts museum allows to pull unstable charts for deployment, for example: if 1.2.3 and 1.2.4-dev versions exist and set to true, 1.2.4-dev will be pulled (default false)
   devel: true
   # When set to `true`, skips running `helm dep up` and `helm dep build` on this release's chart.
-  # Useful when the chart is broken, like seen in https://github.com/roboll/helmfile/issues/1547
+  # Useful when the chart is broken, like seen in https://github.com/huolunl/helmfile/issues/1547
   skipDeps: false
 
 # these labels will be applied to all releases in a Helmfile. Useful in templating if you have a helmfile per environment or customer and don't want to copy the same label to each release
@@ -146,7 +146,7 @@ releases:
       # Go template available in inline values and values files.
       - image:
           # The end result is more or less YAML. So do `quote` to prevent number-like strings from accidentally parsed into numbers!
-          # See https://github.com/roboll/helmfile/issues/608
+          # See https://github.com/huolunl/helmfile/issues/608
           tag: {{ requiredEnv "IMAGE_TAG" | quote }}
           # Otherwise:
           #   tag: "{{ requiredEnv "IMAGE_TAG" }}"
@@ -160,7 +160,7 @@ releases:
           domain: {{ requiredEnv "PLATFORM_ID" }}.my-domain.com
           scheme: {{ env "SCHEME" | default "https" }}
     # Use `values` whenever possible!
-    # `set` translates to helm's `--set key=val`, that is known to suffer from type issues like https://github.com/roboll/helmfile/issues/608
+    # `set` translates to helm's `--set key=val`, that is known to suffer from type issues like https://github.com/huolunl/helmfile/issues/608
     set:
     # single value loaded from a local file, translates to --set-file foo.config=path/to/file
     - name: foo.config
@@ -203,25 +203,25 @@ releases:
     tlsKey: "path/to/key.pem"
     # --kube-context to be passed to helm commands
     # CAUTION: this doesn't work as expected for `tilerless: true`.
-    # See https://github.com/roboll/helmfile/issues/642
+    # See https://github.com/huolunl/helmfile/issues/642
     # (default "", which means the standard kubeconfig, either ~/kubeconfig or the file pointed by $KUBECONFIG environment variable)
     kubeContext: kube-context
     # passes --disable-validation to helm 3 diff plugin, this requires diff plugin >= 3.1.2
     # It may be helpful to deploy charts with helm api v1 CRDS
-    # https://github.com/roboll/helmfile/pull/1373
+    # https://github.com/huolunl/helmfile/pull/1373
     disableValidation: false
     # passes --disable-validation to helm 3 diff plugin, this requires diff plugin >= 3.1.2
     # It is useful when any release contains custom resources for CRDs that is not yet installed onto the cluster.
-    # https://github.com/roboll/helmfile/pull/1618
+    # https://github.com/huolunl/helmfile/pull/1618
     disableValidationOnInstall: false
     # passes --disable-openapi-validation to helm 3 diff plugin, this requires diff plugin >= 3.1.2
     # It may be helpful to deploy charts with helm api v1 CRDS
-    # https://github.com/roboll/helmfile/pull/1373
+    # https://github.com/huolunl/helmfile/pull/1373
     disableOpenAPIValidation: false
     # limit the maximum number of revisions saved per release. Use 0 for no limit (default 10)
     historyMax: 10
     # When set to `true`, skips running `helm dep up` and `helm dep build` on this release's chart.
-    # Useful when the chart is broken, like seen in https://github.com/roboll/helmfile/issues/1547
+    # Useful when the chart is broken, like seen in https://github.com/huolunl/helmfile/issues/1547
     skipDeps: false
 
   # Local chart example
@@ -335,7 +335,7 @@ apiVersions:
 
 # DEPRECATED: This is available only on Helm 2, which has been EOL since 2020
 # Configure a Kubernetes version to  pass to 'helm template' via the --kube-version flag:
-# See https://github.com/roboll/helmfile/pull/2002 for more information.
+# See https://github.com/huolunl/helmfile/pull/2002 for more information.
 kubeVersion: v1.21
 ```
 
@@ -395,7 +395,7 @@ If you wish to treat your enviroment variables as strings always, even if they a
 
 ## Installation
 
-- download one of [releases](https://github.com/roboll/helmfile/releases) or
+- download one of [releases](https://github.com/huolunl/helmfile/releases) or
 - [run as a container](#running-as-a-container) or
 - Archlinux: install via `pacman -S helmfile` or from [AUR](https://aur.archlinux.org/packages/kubernetes-helmfile-bin/) or
 - openSUSE: install via `zypper in helmfile` assuming you are on Tumbleweed; if you are on Leap you must add the [kubic](https://download.opensuse.org/repositories/devel:/kubic/) repo for your distribution version once before that command, e.g. `zypper ar https://download.opensuse.org/repositories/devel:/kubic/openSUSE_Leap_\$releasever kubic`, or
@@ -458,7 +458,7 @@ Iterate on the `helmfile.yaml` by referencing:
 
 - [Configuration](#configuration)
 - [CLI reference](#cli-reference).
-- [Helmfile Best Practices Guide](https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md)
+- [Helmfile Best Practices Guide](https://github.com/huolunl/helmfile/blob/master/docs/writing-helmfile.md)
 
 ## CLI Reference
 
@@ -851,10 +851,10 @@ releases:
 
 The `{{ .Values.foo }}` syntax is the recommended way of using environment values.
 
-Prior to this [pull request](https://github.com/roboll/helmfile/pull/647), environment values were made available through the `{{ .Environment.Values.foo }}` syntax.
+Prior to this [pull request](https://github.com/huolunl/helmfile/pull/647), environment values were made available through the `{{ .Environment.Values.foo }}` syntax.
 This is still working but is **deprecated** and the new `{{ .Values.foo }}` syntax should be used instead.
 
-You can read more infos about the feature proposal [here](https://github.com/roboll/helmfile/issues/640).
+You can read more infos about the feature proposal [here](https://github.com/huolunl/helmfile/issues/640).
 
 ### Loading remote environment values files
 
@@ -976,7 +976,7 @@ On `helmfile [delete|destroy]`, deletions happen in the reverse order.
 That is, `myapp1` and `myapp2` are deleted first, then `servicemesh`, and finally `logging`.
 
 ### Selectors and `needs`
-When using selectors/labels, `needs` are ignored by default. This behaviour can be overruled with a few parameters: 
+When using selectors/labels, `needs` are ignored by default. This behaviour can be overruled with a few parameters:
 | Parameter | default | Description |
 |---|---|---|
 | `--skip-needs` | `true` | `needs` are ignored (default behavior).  |
@@ -1002,7 +1002,7 @@ releases:
 |---|---|---|
 | `helmfile -l name=serviceA sync` | - `serviceA` | By default no needs are included. |
 | `helmfile -l name=serviceA sync --include-needs` | - `serviceB`<br>- `serviceA` | `serviceB` is now part of the release as it is a direct need of `serviceA`.  |
-| `helmfile -l name=serviceA sync --include-transitive-needs` | - `serviceC`<br>- `serviceB`<br>- `serviceA` | `serviceC` is now also part of the release as it is a direct need of `serviceB` and therefore a transitive need of `serviceA`.  | 
+| `helmfile -l name=serviceA sync --include-transitive-needs` | - `serviceC`<br>- `serviceB`<br>- `serviceA` | `serviceC` is now also part of the release as it is a direct need of `serviceB` and therefore a transitive need of `serviceA`.  |
 
 Note that `--include-transitive-needs` will override any potential exclusions done by selectors or conditions. So even if you explicitly exclude a release via a selector it will still be part of the deployment in case it is a direct or transitive need of any of the specified releases.
 ## Separating helmfile.yaml into multiple independent files
@@ -1093,7 +1093,7 @@ selectors: []
 ```
 
 * When a selector is specified, only this selector applies and the parents or CLI selectors are ignored.
-* When not selector is specified there are 2 modes for the selector inheritance because we would like to change the current inheritance behavior (see [issue #344](https://github.com/roboll/helmfile/issues/344)  ).
+* When not selector is specified there are 2 modes for the selector inheritance because we would like to change the current inheritance behavior (see [issue #344](https://github.com/huolunl/helmfile/issues/344)  ).
   * Legacy mode, sub-helmfiles without selectors inherit selectors from their parent helmfile. The initial helmfiles inherit from the command line selectors.
   * explicit mode, sub-helmfile without selectors do not inherit from their parent or the CLI selector. If you want them to inherit from their parent selector then use `selectorsInherited: true`. To enable this explicit mode you need to set the following environment variable `HELMFILE_EXPERIMENTAL=explicit-selector-inheritance` (see [experimental](#experimental-features)).
 * Using `selector: []` will select all releases regardless of the parent selector or cli for the initial helmfile
@@ -1341,7 +1341,7 @@ Copy `autocomplete/helmfile_bash_autocomplete` or `autocomplete/helmfile_zsh_aut
 
 ## Examples
 
-For more examples, see the [examples/README.md](https://github.com/roboll/helmfile/blob/master/examples/README.md) or the [`helmfile`](https://github.com/cloudposse/helmfiles/tree/master/releases) distribution by [Cloud Posse](https://github.com/cloudposse/).
+For more examples, see the [examples/README.md](https://github.com/huolunl/helmfile/blob/master/examples/README.md) or the [`helmfile`](https://github.com/cloudposse/helmfiles/tree/master/releases) distribution by [Cloud Posse](https://github.com/cloudposse/).
 
 ## Integrations
 
@@ -1397,7 +1397,7 @@ Recommendations:
 
 - Do create ArgoCD `Application` custom resource per Helm/Helmfile release, each point to respective sub-directory generated by `helmfile template --output-dir-template`
 - If you don't directly push it to the main Git branch and instead go through a pull-request, do lint rendered manifests on your CI, so that you can catch easy mistakes earlier/before ArgoCD finally deploys it
-- See [this ArgoCD issue](https://github.com/argoproj/argo-cd/issues/2143#issuecomment-570478329) for why you may want this, and see [this helmfile issue](https://github.com/roboll/helmfile/pull/1357) for how `--output-dir-template` works.
+- See [this ArgoCD issue](https://github.com/argoproj/argo-cd/issues/2143#issuecomment-570478329) for why you may want this, and see [this helmfile issue](https://github.com/huolunl/helmfile/pull/1357) for how `--output-dir-template` works.
 
 ### Azure ACR Integration
 

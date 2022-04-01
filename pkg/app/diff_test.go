@@ -9,9 +9,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/roboll/helmfile/pkg/exectest"
-	"github.com/roboll/helmfile/pkg/helmexec"
-	"github.com/roboll/helmfile/pkg/testhelper"
+	"github.com/huolunl/helmfile/pkg/exectest"
+	"github.com/huolunl/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/testhelper"
 	"github.com/variantdev/vals"
 	"go.uber.org/zap"
 )
@@ -998,7 +998,7 @@ bar 	4       	Fri Nov  1 08:40:07 2019	DEPLOYED	mychart2-3.1.0	3.1.0      	defau
 		// upgrades with selector
 		//
 		{
-			// see https://github.com/roboll/helmfile/issues/919#issuecomment-549831747
+			// see https://github.com/huolunl/helmfile/issues/919#issuecomment-549831747
 			name:  "upgrades with good selector with --skip-needs=true",
 			loc:   location(),
 			flags: flags{skipNeeds: true},
@@ -1214,7 +1214,7 @@ err: release "default/default/external-secrets" depends on "default/kube-system/
 `,
 		},
 		{
-			// see https://github.com/roboll/helmfile/issues/919#issuecomment-549831747
+			// see https://github.com/huolunl/helmfile/issues/919#issuecomment-549831747
 			name: "upgrades with bad selector",
 			loc:  location(),
 			files: map[string]string{

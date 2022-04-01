@@ -142,7 +142,7 @@ Release Templating supports the following parts of release definition:
   # ...
   ```
 
-See the [issue 428](https://github.com/roboll/helmfile/issues/428) for more context on how this is supposed to work.
+See the [issue 428](https://github.com/huolunl/helmfile/issues/428) for more context on how this is supposed to work.
 
 ## Layering Release Values
 
@@ -213,7 +213,7 @@ Great!
 
 Now, repeat the above steps for each your `helmfile.yaml`, so that all your helmfiles becomes DRY.
 
-Please also see [the discussion in the issue 388](https://github.com/roboll/helmfile/issues/388#issuecomment-491710348) for more advanced layering examples.
+Please also see [the discussion in the issue 388](https://github.com/huolunl/helmfile/issues/388#issuecomment-491710348) for more advanced layering examples.
 
 ## Merging Arrays in Layers
 

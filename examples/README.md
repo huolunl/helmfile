@@ -32,4 +32,4 @@ $ RAILS_ENV=prod helmfile --selector job=dbmigrator sync
 $ kubectl logs -l job=dbmigrator
 ```
 
-For more context, see [this issue](https://github.com/roboll/helmfile/issues/49).
+For more context, see [this issue](https://github.com/huolunl/helmfile/issues/49).

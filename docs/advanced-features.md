@@ -16,7 +16,7 @@ Helmfile integrates [vals]() to import configuration parameters from following b
 
 See [Vals "Suported Backends"](https://github.com/variantdev/vals#suported-backends) for the full list of available backends.
 
-This feature was implemented in https://github.com/roboll/helmfile/pull/906.
+This feature was implemented in https://github.com/huolunl/helmfile/pull/906.
 If you're curious how it's designed and how it works, please consult the pull request.
 
 ### Deploy Kustomizations with Helmfile
@@ -93,7 +93,7 @@ which can be included in the temporary chart.
 
 After all, Helmfile just installs the temporary chart like standard charts, which allows you to manage everything with Helmfile regardless of each app is declared using a Helm chart or a kustomization.
 
-Please also see [test/advanced/helmfile.yaml](https://github.com/roboll/helmfile/tree/master/test/advanced/helmfile.yaml) for an example of kustomization support and more.
+Please also see [test/advanced/helmfile.yaml](https://github.com/huolunl/helmfile/tree/master/test/advanced/helmfile.yaml) for an example of kustomization support and more.
 
 ### Adhoc Kustomization of Helm charts
 
@@ -147,7 +147,7 @@ Please note that the second `data` field `bar` is coming from the strategic-merg
 
 There's also `releases[].jsonPatches` that works similarly to `strategicMergePatches` but has additional capability to remove fields.
 
-Please also see [test/advanced/helmfile.yaml](https://github.com/roboll/helmfile/tree/master/test/advanced/helmfile.yaml) for an example of patching support and more.
+Please also see [test/advanced/helmfile.yaml](https://github.com/huolunl/helmfile/tree/master/test/advanced/helmfile.yaml) for an example of patching support and more.
 
 #### `transformers`
 
@@ -296,4 +296,4 @@ dependencies:
   condition: bar.enabled
 ```
 
-Please read https://github.com/roboll/helmfile/issues/1762#issuecomment-816341251 for more details.
+Please read https://github.com/huolunl/helmfile/issues/1762#issuecomment-816341251 for more details.

@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/roboll/helmfile/pkg/environment"
-	"github.com/roboll/helmfile/pkg/state"
-	"github.com/roboll/helmfile/pkg/tmpl"
+	"github.com/huolunl/helmfile/pkg/environment"
+	"github.com/huolunl/helmfile/pkg/state"
+	"github.com/huolunl/helmfile/pkg/tmpl"
 )
 
 func prependLineNumbers(text string) string {
@@ -46,7 +46,7 @@ func (r *desiredStateLoader) renderPrestate(firstPassEnv *environment.Environmen
 	sanitized := strings.ReplaceAll(yamlData, "<no value>", "")
 
 	if len(yamlData) != len(sanitized) {
-		msg := "replaced <no value>s to workaround https://github.com/golang/go/issues/24963 to address https://github.com/roboll/helmfile/issues/553:\n%s"
+		msg := "replaced <no value>s to workaround https://github.com/golang/go/issues/24963 to address https://github.com/huolunl/helmfile/issues/553:\n%s"
 		r.logger.Debugf(msg, cmp.Diff(yamlData, sanitized))
 	}
 

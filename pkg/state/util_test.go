@@ -37,8 +37,8 @@ func TestIsLocalChart(t *testing.T) {
 		},
 		{
 			// Regression test case for:
-			// * https://github.com/roboll/helmfile/issues/675
-			// * https://github.com/roboll/helmfile/issues/687
+			// * https://github.com/huolunl/helmfile/issues/675
+			// * https://github.com/huolunl/helmfile/issues/687
 			input:    "https://github.com/arangodb/kube-arangodb/releases/download/0.3.11/kube-arangodb-crd.tgz",
 			expected: false,
 		},
@@ -96,8 +96,8 @@ func TestResolveRemortChart(t *testing.T) {
 		},
 		{
 			// Regression test case for:
-			// * https://github.com/roboll/helmfile/issues/675
-			// * https://github.com/roboll/helmfile/issues/687
+			// * https://github.com/huolunl/helmfile/issues/675
+			// * https://github.com/huolunl/helmfile/issues/687
 			input:  "https://github.com/arangodb/kube-arangodb/releases/download/0.3.11/kube-arangodb-crd.tgz",
 			remote: false,
 		},

@@ -22,11 +22,11 @@ import (
 	"github.com/imdario/mergo"
 	"github.com/variantdev/chartify"
 
-	"github.com/roboll/helmfile/pkg/environment"
-	"github.com/roboll/helmfile/pkg/event"
-	"github.com/roboll/helmfile/pkg/helmexec"
-	"github.com/roboll/helmfile/pkg/remote"
-	"github.com/roboll/helmfile/pkg/tmpl"
+	"github.com/huolunl/helmfile/pkg/environment"
+	"github.com/huolunl/helmfile/pkg/event"
+	"github.com/huolunl/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/remote"
+	"github.com/huolunl/helmfile/pkg/tmpl"
 
 	"github.com/tatsushid/go-prettytable"
 	"github.com/variantdev/vals"
@@ -218,7 +218,7 @@ type ReleaseSpec struct {
 	// work-around against broken CRs
 	// See also:
 	// - https://github.com/helm/helm/pull/6819
-	// - https://github.com/roboll/helmfile/issues/1167
+	// - https://github.com/huolunl/helmfile/issues/1167
 	DisableOpenAPIValidation *bool `yaml:"disableOpenAPIValidation,omitempty"`
 
 	// DisableValidation is rarely used to bypass the whole validation of manifests against the Kubernetes cluster
@@ -494,15 +494,15 @@ func (st *HelmState) prepareSyncReleases(helm helmexec.Interface, additionalValu
 				// We skip generating values files in that case, because for an uninstall with `helm delete`, we don't need to those.
 				// The values files are for `helm upgrade -f values.yaml` calls that happens when the release has `installed: true`.
 				// This logic addresses:
-				// - https://github.com/roboll/helmfile/issues/519
-				// - https://github.com/roboll/helmfile/issues/616
+				// - https://github.com/huolunl/helmfile/issues/519
+				// - https://github.com/huolunl/helmfile/issues/616
 				if !release.Desired() {
 					results <- syncPrepareResult{release: release, flags: []string{}, errors: []*ReleaseError{}}
 					continue
 				}
 
 				// TODO We need a long-term fix for this :)
-				// See https://github.com/roboll/helmfile/issues/737
+				// See https://github.com/huolunl/helmfile/issues/737
 				mut.Lock()
 				flags, files, flagsErr := st.flagsForUpgrade(helm, release, workerIndex)
 				mut.Unlock()
@@ -588,7 +588,7 @@ func (st *HelmState) DetectReleasesToBeDeletedForSync(helm helmexec.Interface, r
 			if err != nil {
 				return nil, err
 			} else if installed {
-				// Otherwise `release` messed up(https://github.com/roboll/helmfile/issues/554)
+				// Otherwise `release` messed up(https://github.com/huolunl/helmfile/issues/554)
 				r := release
 				detected = append(detected, r)
 			}
@@ -606,7 +606,7 @@ func (st *HelmState) DetectReleasesToBeDeleted(helm helmexec.Interface, releases
 		if err != nil {
 			return nil, err
 		} else if installed {
-			// Otherwise `release` messed up(https://github.com/roboll/helmfile/issues/554)
+			// Otherwise `release` messed up(https://github.com/huolunl/helmfile/issues/554)
 			r := release
 			detected = append(detected, r)
 		}
@@ -648,7 +648,7 @@ func ReleaseToID(r *ReleaseSpec) string {
 	if kc != "" {
 		if tns == "" && ns == "" {
 			// This is intentional to avoid conflating kc=,ns=foo,name=bar and kc=foo,ns=,name=bar.
-			// Before https://github.com/roboll/helmfile/pull/1823 they were both `foo/bar` which turned out to break `needs` in many ways.
+			// Before https://github.com/huolunl/helmfile/pull/1823 they were both `foo/bar` which turned out to break `needs` in many ways.
 			//
 			// We now explicitly differentiate each with `foo//bar` and `foo/bar`.
 			// Note that `foo//bar` is not always a equivalent to `foo/default/bar` as the default namespace is depedent on
@@ -1055,7 +1055,7 @@ func (st *HelmState) PrepareCharts(helm helmexec.Interface, dir string, concurre
 				// the later process.
 				//
 				// If it wasn't called here, Helmfile can end up an issue like
-				// https://github.com/roboll/helmfile/issues/1328
+				// https://github.com/huolunl/helmfile/issues/1328
 				if _, err := st.triggerPrepareEvent(release, helmfileCommand); err != nil {
 					results <- &chartPrepareResult{err: err}
 					return
@@ -1144,12 +1144,12 @@ func (st *HelmState) PrepareCharts(helm helmexec.Interface, dir string, concurre
 					// In such situation, Helm fails with an error like:
 					//   Error: found in Chart.yaml, but missing in charts/ directory: cert-manager, prometheus, postgresql, gitlab-runner, grafana, redis
 					//
-					// (See also https://github.com/roboll/helmfile/issues/1401#issuecomment-670854495)
+					// (See also https://github.com/huolunl/helmfile/issues/1401#issuecomment-670854495)
 					//
 					// To avoid it, we need to call a `helm dep build` command on the chart.
 					// But the command may consistently fail when an outdated Chart.lock exists.
 					//
-					// (I've mentioned about such case in https://github.com/roboll/helmfile/pull/1400.)
+					// (I've mentioned about such case in https://github.com/huolunl/helmfile/pull/1400.)
 					//
 					// Trying to run `helm dep build` on the chart regardless of if it's from local or remote is
 					// problematic, as usually the user would have no way to fix the remote chart on their own.
@@ -1266,11 +1266,11 @@ func (st *HelmState) runHelmDepBuilds(helm helmexec.Interface, concurrency int, 
 	// 1. `helm dep build` fails when it was run concurrency on the same chart.
 	//    To avoid that, we run `helm dep build` only once per each local chart.
 	//
-	//    See https://github.com/roboll/helmfile/issues/1438
+	//    See https://github.com/huolunl/helmfile/issues/1438
 	// 2. Even if it isn't on the same local chart, `helm dep build` intermittently fails when run concurrentl
 	//    So we shouldn't use goroutines like we do for other helm operations here.
 	//
-	//    See https://github.com/roboll/helmfile/issues/1521
+	//    See https://github.com/huolunl/helmfile/issues/1521
 	for _, r := range builds {
 		if err := helm.BuildDeps(r.releaseName, r.chartPath); err != nil {
 			if r.chartFetchedByGoGetter {
@@ -1665,7 +1665,7 @@ func (st *HelmState) prepareDiffReleases(helm helmexec.Interface, additionalValu
 				disableValidation := release.DisableValidationOnInstall != nil && *release.DisableValidationOnInstall && !isInstalled(release)
 
 				// TODO We need a long-term fix for this :)
-				// See https://github.com/roboll/helmfile/issues/737
+				// See https://github.com/huolunl/helmfile/issues/737
 				mut.Lock()
 				flags, files, err := st.flagsForDiff(helm, release, disableValidation, workerIndex)
 				mut.Unlock()

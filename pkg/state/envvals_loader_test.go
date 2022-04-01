@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/roboll/helmfile/pkg/remote"
+	"github.com/huolunl/helmfile/pkg/remote"
 	"go.uber.org/zap"
 )
 
@@ -31,7 +31,7 @@ func newLoader() *EnvironmentValuesLoader {
 	return NewEnvironmentValuesLoader(storage, ioutil.ReadFile, sugar, remote.NewRemote(sugar, "/tmp", readFile, dirExists, fileExists))
 }
 
-// See https://github.com/roboll/helmfile/pull/1169
+// See https://github.com/huolunl/helmfile/pull/1169
 func TestEnvValsLoad_SingleValuesFile(t *testing.T) {
 	l := newLoader()
 
@@ -49,7 +49,7 @@ func TestEnvValsLoad_SingleValuesFile(t *testing.T) {
 	}
 }
 
-// See https://github.com/roboll/helmfile/issues/1150
+// See https://github.com/huolunl/helmfile/issues/1150
 func TestEnvValsLoad_OverwriteNilValue_Issue1150(t *testing.T) {
 	l := newLoader()
 
@@ -71,7 +71,7 @@ func TestEnvValsLoad_OverwriteNilValue_Issue1150(t *testing.T) {
 	}
 }
 
-// See https://github.com/roboll/helmfile/issues/1154
+// See https://github.com/huolunl/helmfile/issues/1154
 func TestEnvValsLoad_OverwriteWithNilValue_Issue1154(t *testing.T) {
 	l := newLoader()
 
@@ -94,7 +94,7 @@ func TestEnvValsLoad_OverwriteWithNilValue_Issue1154(t *testing.T) {
 	}
 }
 
-// See https://github.com/roboll/helmfile/issues/1168
+// See https://github.com/huolunl/helmfile/issues/1168
 func TestEnvValsLoad_OverwriteEmptyValue_Issue1168(t *testing.T) {
 	l := newLoader()
 

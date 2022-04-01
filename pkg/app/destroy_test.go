@@ -8,9 +8,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/roboll/helmfile/pkg/exectest"
-	"github.com/roboll/helmfile/pkg/helmexec"
-	"github.com/roboll/helmfile/pkg/testhelper"
+	"github.com/huolunl/helmfile/pkg/exectest"
+	"github.com/huolunl/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/testhelper"
 	"github.com/variantdev/vals"
 	"go.uber.org/zap"
 )

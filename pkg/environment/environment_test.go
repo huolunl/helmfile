@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-// See https://github.com/roboll/helmfile/issues/1150
+// See https://github.com/huolunl/helmfile/issues/1150
 func TestMerge_OverwriteNilValue_Issue1150(t *testing.T) {
 	dst := &Environment{
 		Name: "dst",
@@ -49,7 +49,7 @@ func TestMerge_OverwriteNilValue_Issue1150(t *testing.T) {
 	}
 }
 
-// See https://github.com/roboll/helmfile/issues/1154
+// See https://github.com/huolunl/helmfile/issues/1154
 func TestMerge_OverwriteWithNilValue_Issue1154(t *testing.T) {
 	dst := &Environment{
 		Name: "dst",

@@ -15,11 +15,11 @@ import (
 	"syscall"
 	"text/tabwriter"
 
-	"github.com/roboll/helmfile/pkg/argparser"
-	"github.com/roboll/helmfile/pkg/helmexec"
-	"github.com/roboll/helmfile/pkg/plugins"
-	"github.com/roboll/helmfile/pkg/remote"
-	"github.com/roboll/helmfile/pkg/state"
+	"github.com/huolunl/helmfile/pkg/argparser"
+	"github.com/huolunl/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/plugins"
+	"github.com/huolunl/helmfile/pkg/remote"
+	"github.com/huolunl/helmfile/pkg/state"
 	"github.com/variantdev/vals"
 	"go.uber.org/zap"
 )
@@ -216,7 +216,7 @@ func (a *App) Diff(c DiffConfigProvider) error {
 			case *state.ReleaseError:
 				switch e.Code {
 				case 2:
-					// See https://github.com/roboll/helmfile/issues/874
+					// See https://github.com/huolunl/helmfile/issues/874
 					allDiffDetectedErrs = append(allDiffDetectedErrs, e)
 				default:
 					criticalErrs = append(criticalErrs, e)
@@ -236,7 +236,7 @@ func (a *App) Diff(c DiffConfigProvider) error {
 	if c.DetailedExitcode() && (len(allDiffDetectedErrs) > 0 || affectedAny) {
 		// We take the first release error w/ exit status 2 (although all the defered errs should have exit status 2)
 		// to just let helmfile itself to exit with 2
-		// See https://github.com/roboll/helmfile/issues/749
+		// See https://github.com/huolunl/helmfile/issues/749
 		code := 2
 		e := &Error{
 			msg:  "Identified at least one change",
@@ -807,7 +807,7 @@ func (a *App) visitStates(fileOrDir string, defOpts LoadOpts, converge func(*sta
 
 		if err != nil {
 			switch stateLoadErr := err.(type) {
-			// Addresses https://github.com/roboll/helmfile/issues/279
+			// Addresses https://github.com/huolunl/helmfile/issues/279
 			case *state.StateLoadError:
 				switch stateLoadErr.Cause.(type) {
 				case *state.UndefinedEnvError:
@@ -1133,7 +1133,7 @@ func (a *App) findDesiredStateFiles(specifiedPath string, opts LoadOpts) ([]stri
 			defaultFile = DefaultHelmfile
 		} else if a.fileExistsAt(DeprecatedHelmfile) {
 			log.Printf(
-				"warn: %s is being loaded: %s is deprecated in favor of %s. See https://github.com/roboll/helmfile/issues/25 for more information",
+				"warn: %s is being loaded: %s is deprecated in favor of %s. See https://github.com/huolunl/helmfile/issues/25 for more information",
 				DeprecatedHelmfile,
 				DeprecatedHelmfile,
 				DefaultHelmfile,
@@ -1258,7 +1258,7 @@ func (a *App) apply(r *Run, c ApplyConfigProvider) (bool, bool, []error) {
 	// This is required when you're trying to deduplicate releases by the selector.
 	// Without this, `PlanReleases` conflates duplicates and return both in `batches`,
 	// even if we provided `SelectedReleases: selectedReleases`.
-	// See https://github.com/roboll/helmfile/issues/1818 for more context.
+	// See https://github.com/huolunl/helmfile/issues/1818 for more context.
 	st.Releases = selectedAndNeededReleases
 
 	plan, err := st.PlanReleases(state.PlanOptions{Reverse: false, SelectedReleases: selectedReleases, SkipNeeds: c.SkipNeeds(), IncludeNeeds: c.IncludeNeeds(), IncludeTransitiveNeeds: c.IncludeTransitiveNeeds()})
@@ -1674,7 +1674,7 @@ func (a *App) sync(r *Run, c SyncConfigProvider) (bool, []error) {
 	// This is required when you're trying to deduplicate releases by the selector.
 	// Without this, `PlanReleases` conflates duplicates and return both in `batches`,
 	// even if we provided `SelectedReleases: selectedReleases`.
-	// See https://github.com/roboll/helmfile/issues/1818 for more context.
+	// See https://github.com/huolunl/helmfile/issues/1818 for more context.
 	st.Releases = selectedAndNeededReleases
 
 	batches, err := st.PlanReleases(state.PlanOptions{Reverse: false, SelectedReleases: selectedReleases, IncludeNeeds: c.IncludeNeeds(), IncludeTransitiveNeeds: c.IncludeTransitiveNeeds(), SkipNeeds: c.SkipNeeds()})
@@ -1715,7 +1715,7 @@ func (a *App) sync(r *Run, c SyncConfigProvider) (bool, []error) {
 			}
 			// TODO Emit error when the user opted to fail when the needed release is disabled,
 			// instead of silently ignoring it.
-			// See https://github.com/roboll/helmfile/issues/1018
+			// See https://github.com/huolunl/helmfile/issues/1018
 		}
 	}
 
@@ -1835,7 +1835,7 @@ func (a *App) template(r *Run, c TemplateConfigProvider) (bool, []error) {
 	// This is required when you're trying to deduplicate releases by the selector.
 	// Without this, `PlanReleases` conflates duplicates and return both in `batches`,
 	// even if we provided `SelectedReleases: selectedReleases`.
-	// See https://github.com/roboll/helmfile/issues/1818 for more context.
+	// See https://github.com/huolunl/helmfile/issues/1818 for more context.
 	st.Releases = selectedAndNeededReleases
 
 	batches, err := st.PlanReleases(state.PlanOptions{Reverse: false, SelectedReleases: selectedReleases, IncludeNeeds: c.IncludeNeeds(), IncludeTransitiveNeeds: c.IncludeTransitiveNeeds(), SkipNeeds: !c.IncludeNeeds()})
@@ -1952,7 +1952,7 @@ func (a *App) writeValues(r *Run, c WriteValuesConfigProvider) (bool, []error) {
 
 	// Note: We don't calculate the DAG of releases here unlike other helmfile operations,
 	// because there's no need to do so for just writing values.
-	// See the first bullet in https://github.com/roboll/helmfile/issues/1460#issuecomment-691863465
+	// See the first bullet in https://github.com/huolunl/helmfile/issues/1460#issuecomment-691863465
 	if len(releasesToWrite) > 0 {
 		var rs []state.ReleaseSpec
 

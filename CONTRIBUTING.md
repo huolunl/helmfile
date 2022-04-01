@@ -4,16 +4,16 @@ By contributing to `helmfile`, you accept and agree to the following DCO and lic
 conditions for your present and future Contributions submitted to the `helmfile` project.
 
 [DCO](https://developercertificate.org/)
-[License](https://github.com/roboll/helmfile/blob/master/LICENSE)
+[License](https://github.com/huolunl/helmfile/blob/master/LICENSE)
 
 # Developing helmfile
 
 Locate your `GOPATH`, usually `~/go`, and run:
 
 ```console
-$ go get github.com/roboll/helmfile
+$ go get github.com/huolunl/helmfile
 
-$ cd $GOPATH/src/github.com/roboll/helmfile
+$ cd $GOPATH/src/github.com/huolunl/helmfile
 
 $ git checkout -b your-shiny-new-feature origin/master
 

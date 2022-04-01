@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/roboll/helmfile/pkg/helmexec"
+	"github.com/huolunl/helmfile/pkg/helmexec"
 )
 
 func TestGoGetter(t *testing.T) {

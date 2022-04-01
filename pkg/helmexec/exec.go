@@ -379,7 +379,7 @@ func (helm *execer) TemplateRelease(name string, chart string, flags ...string) 
 		// like excessive `wrote path/to/output/dir/chart/template/file.yaml` messages,
 		// but manifets.
 		//
-		// See https://github.com/roboll/helmfile/pull/1691#issuecomment-805636021 for more information.
+		// See https://github.com/huolunl/helmfile/pull/1691#issuecomment-805636021 for more information.
 		helm.info(out)
 	} else {
 		// Always write to stdout for use with e.g. `helmfile template | kubectl apply -f -`

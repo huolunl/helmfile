@@ -10,9 +10,9 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	goversion "github.com/hashicorp/go-version"
+	"github.com/huolunl/helmfile/pkg/app/version"
+	"github.com/huolunl/helmfile/pkg/helmexec"
 	"github.com/r3labs/diff"
-	"github.com/roboll/helmfile/pkg/app/version"
-	"github.com/roboll/helmfile/pkg/helmexec"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
 )
@@ -199,7 +199,7 @@ func (st *HelmState) updateDependenciesInTempDir(shell helmexec.DependencyUpdate
 	}
 
 	if len(unresolved.deps) == 0 {
-		st.logger.Warnf("There are no repositories defined in your helmfile.yaml.\nThis means helmfile cannot update your dependencies or create a lock file.\nSee https://github.com/roboll/helmfile/issues/878 for more information.")
+		st.logger.Warnf("There are no repositories defined in your helmfile.yaml.\nThis means helmfile cannot update your dependencies or create a lock file.\nSee https://github.com/huolunl/helmfile/issues/878 for more information.")
 		return st, nil
 	}
 
