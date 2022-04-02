@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"reflect"
 	"testing"
@@ -32,7 +31,7 @@ func (mock *mockRunner) Execute(cmd string, args []string, env map[string]string
 }
 
 func MockExecer(logger *zap.SugaredLogger, kubeContext string) *execer {
-	execer := New("helm", logger, kubeContext, &mockRunner{})
+	execer := New("helm", logger, kubeContext, &mockRunner{}, &bytes.Buffer{})
 	return execer
 }
 
@@ -647,109 +646,5 @@ func Test_LogLevels(t *testing.T) {
 		if buffer.String() != expected {
 			t.Errorf("helmexec.AddRepo()\nactual = %v\nexpect = %v", buffer.String(), expected)
 		}
-	}
-}
-
-func Test_getTillerlessEnv(t *testing.T) {
-	context := HelmContext{Tillerless: true, TillerNamespace: "foo", WorkerIndex: 1}
-
-	os.Unsetenv("KUBECONFIG")
-	actual := context.getTillerlessEnv()
-	if val, found := actual["HELM_TILLER_SILENT"]; !found || val != "true" {
-		t.Errorf("getTillerlessEnv() HELM_TILLER_SILENT\nactual = %s\nexpect = true", val)
-	}
-	// This feature is disabled until it is fixed in helm
-	/*if val, found := actual["HELM_TILLER_PORT"]; !found || val != "44135" {
-		t.Errorf("getTillerlessEnv() HELM_TILLER_PORT\nactual = %s\nexpect = 44135", val)
-	}*/
-	if val, found := actual["KUBECONFIG"]; found {
-		t.Errorf("getTillerlessEnv() KUBECONFIG\nactual = %s\nexpect = nil", val)
-	}
-
-	os.Setenv("KUBECONFIG", "toto")
-	actual = context.getTillerlessEnv()
-	cwd, _ := os.Getwd()
-	expected := path.Join(cwd, "toto")
-	if val, found := actual["KUBECONFIG"]; !found || val != expected {
-		t.Errorf("getTillerlessEnv() KUBECONFIG\nactual = %s\nexpect = %s", val, expected)
-	}
-	os.Unsetenv("KUBECONFIG")
-}
-
-func Test_mergeEnv(t *testing.T) {
-	actual := env2map(mergeEnv([]string{"A=1", "B=c=d", "E=2"}, map[string]string{"B": "3", "F": "4"}))
-	expected := map[string]string{"A": "1", "B": "3", "E": "2", "F": "4"}
-	if !reflect.DeepEqual(actual, expected) {
-		t.Errorf("mergeEnv()\nactual = %v\nexpect = %v", actual, expected)
-	}
-}
-
-func Test_Template(t *testing.T) {
-	var buffer bytes.Buffer
-	logger := NewLogger(&buffer, "debug")
-	helm := MockExecer(logger, "dev")
-	err := helm.TemplateRelease("release", "path/to/chart", "--values", "file.yml")
-	expected := `Templating release=release, chart=path/to/chart
-exec: helm --kube-context dev template path/to/chart --name release --values file.yml
-`
-	if err != nil {
-		t.Errorf("unexpected error: %v", err)
-	}
-	if buffer.String() != expected {
-		t.Errorf("helmexec.Template()\nactual = %v\nexpect = %v", buffer.String(), expected)
-	}
-}
-
-func Test_IsHelm3(t *testing.T) {
-	helm2Runner := mockRunner{output: []byte("Client: v2.16.0+ge13bc94\n")}
-	helm := New("helm", NewLogger(os.Stdout, "info"), "dev", &helm2Runner)
-	if helm.IsHelm3() {
-		t.Error("helmexec.IsHelm3() - Detected Helm 3 with Helm 2 version")
-	}
-
-	helm3Runner := mockRunner{output: []byte("v3.0.0+ge29ce2a\n")}
-	helm = New("helm", NewLogger(os.Stdout, "info"), "dev", &helm3Runner)
-	if !helm.IsHelm3() {
-		t.Error("helmexec.IsHelm3() - Failed to detect Helm 3")
-	}
-
-	os.Setenv("HELMFILE_HELM3", "1")
-	helm2Runner = mockRunner{output: []byte("Client: v2.16.0+ge13bc94\n")}
-	helm = New("helm", NewLogger(os.Stdout, "info"), "dev", &helm2Runner)
-	if !helm.IsHelm3() {
-		t.Error("helmexec.IsHelm3() - Helm3 not detected when HELMFILE_HELM3 is set")
-	}
-	os.Setenv("HELMFILE_HELM3", "")
-}
-
-func Test_GetVersion(t *testing.T) {
-	helm2Runner := mockRunner{output: []byte("Client: v2.16.1+ge13bc94\n")}
-	helm := New("helm", NewLogger(os.Stdout, "info"), "dev", &helm2Runner)
-	ver := helm.GetVersion()
-	if ver.Major != 2 || ver.Minor != 16 || ver.Patch != 1 {
-		t.Error(fmt.Sprintf("helmexec.GetVersion - did not detect correct Helm2 version; it was: %+v", ver))
-	}
-
-	helm3Runner := mockRunner{output: []byte("v3.2.4+ge29ce2a\n")}
-	helm = New("helm", NewLogger(os.Stdout, "info"), "dev", &helm3Runner)
-	ver = helm.GetVersion()
-	if ver.Major != 3 || ver.Minor != 2 || ver.Patch != 4 {
-		t.Error(fmt.Sprintf("helmexec.GetVersion - did not detect correct Helm3 version; it was: %+v", ver))
-	}
-}
-
-func Test_IsVersionAtLeast(t *testing.T) {
-	helm2Runner := mockRunner{output: []byte("Client: v2.16.1+ge13bc94\n")}
-	helm := New("helm", NewLogger(os.Stdout, "info"), "dev", &helm2Runner)
-	if !helm.IsVersionAtLeast("2.1.0") {
-		t.Error("helmexec.IsVersionAtLeast - 2.16.1 not atleast 2.1")
-	}
-
-	if helm.IsVersionAtLeast("2.19.0") {
-		t.Error("helmexec.IsVersionAtLeast - 2.16.1 is atleast 2.19")
-	}
-
-	if helm.IsVersionAtLeast("3.2.0") {
-		t.Error("helmexec.IsVersionAtLeast - 2.16.1 is atleast 3.2")
 	}
 }
