@@ -27,6 +27,7 @@ type execer struct {
 	helmBinary           string
 	version              semver.Version
 	runner               Runner
+	runnerDiff           DiffRunner
 	logger               *zap.SugaredLogger
 	kubeContext          string
 	extra                []string
@@ -397,7 +398,7 @@ func (helm *execer) DiffRelease(context HelmContext, name, chart string, suppres
 	}
 	preArgs := context.GetTillerlessArgs(helm)
 	env := context.getTillerlessEnv()
-	out, err := helm.exec(append(append(preArgs, "diff", "upgrade", "--reset-values", "--allow-unreleased", name, chart), flags...), env)
+	out, err := helm.execDiff(true, append(append(preArgs, "diff", "upgrade", "--reset-values", "--allow-unreleased", name, chart), flags...), env)
 	// Do our best to write STDOUT only when diff existed
 	// Unfortunately, this works only when you run helmfile with `--detailed-exitcode`
 	detailedExitcodeEnabled := false
@@ -503,6 +504,21 @@ func (helm *execer) exec(args []string, env map[string]string) ([]byte, error) {
 	cmd := fmt.Sprintf("exec: %s %s", helm.helmBinary, strings.Join(cmdargs, " "))
 	helm.logger.Debug(cmd)
 	outBytes, err := helm.runner.Execute(helm.helmBinary, cmdargs, env)
+	//helm.writer.Write(outBytes)
+	return outBytes, err
+}
+func (helm *execer) execDiff(isDiff bool, args []string, env map[string]string) ([]byte, error) {
+	cmdargs := args
+	if len(helm.extra) > 0 {
+		cmdargs = append(helm.extra, cmdargs...)
+	}
+	if helm.kubeContext != "" {
+		cmdargs = append([]string{"--kube-context", helm.kubeContext}, cmdargs...)
+	}
+	cmd := fmt.Sprintf("exec: %s %s", helm.helmBinary, strings.Join(cmdargs, " "))
+	helm.logger.Debug(cmd)
+	helm.runnerDiff = DiffShellRunner{}
+	outBytes, err := helm.runnerDiff.ExecuteDiff(isDiff, helm.helmBinary, cmdargs, env)
 	helm.writer.Write(outBytes)
 	return outBytes, err
 }
@@ -520,6 +536,21 @@ func (helm *execer) execStdIn(args []string, env map[string]string, stdin io.Rea
 	cmd := fmt.Sprintf("exec: %s %s", helm.helmBinary, strings.Join(cmdargs, " "))
 	helm.logger.Debug(cmd)
 	outBytes, err := helm.runner.ExecuteStdIn(helm.helmBinary, cmdargs, env, stdin)
+	return outBytes, err
+}
+func (helm *execer) execStdInDiff(isDiff bool, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
+	cmdargs := args
+	if len(helm.extra) > 0 {
+		//cmdargs = append(cmdargs, helm.extra...)
+		cmdargs = append(helm.extra, cmdargs...)
+
+	}
+	if helm.kubeContext != "" {
+		cmdargs = append([]string{"--kube-context", helm.kubeContext}, cmdargs...)
+	}
+	cmd := fmt.Sprintf("exec: %s %s", helm.helmBinary, strings.Join(cmdargs, " "))
+	helm.logger.Debug(cmd)
+	outBytes, err := helm.runnerDiff.ExecuteStdInDiff(isDiff, helm.helmBinary, cmdargs, env, stdin)
 	return outBytes, err
 }
 

@@ -19,9 +19,11 @@ type Runner interface {
 	Execute(cmd string, args []string, env map[string]string) ([]byte, error)
 	ExecuteStdIn(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error)
 }
-type RunnerSingleProcess interface {
-	ExecuteSingleProcess(cmd string, args []string, env map[string]string) ([]byte, error)
-	ExecuteStdInSingleProcess(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error)
+type DiffRunner interface {
+	ExecuteDiff(ifDiff bool, cmd string, args []string, env map[string]string) ([]byte, error)
+	ExecuteStdInDiff(isDiff bool, cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error)
+}
+type DiffShellRunner struct {
 }
 
 // ShellRunner implemention for shell commands
@@ -33,24 +35,20 @@ type ShellRunner struct {
 
 // Execute a shell command
 func (shell ShellRunner) Execute(cmd string, args []string, env map[string]string) ([]byte, error) {
-	return helm.Exec(args...)
-
+	return helm.Exec(false, args...)
+}
+func (shell DiffShellRunner) ExecuteDiff(isDiff bool, cmd string, args []string, env map[string]string) ([]byte, error) {
+	return helm.Exec(isDiff, args...)
 }
 
 // Execute a shell command
 func (shell ShellRunner) ExecuteStdIn(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
-	return helm.Exec(args...)
-
+	return helm.Exec(false, args...)
 }
 
 // Execute a shell command
-func (shell ShellRunner) ExecuteSingleProcess(cmd string, args []string, env map[string]string) ([]byte, error) {
-	return helm.Exec(args...)
-}
-
-// Execute a shell command
-func (shell ShellRunner) ExecuteStdInSingleProcess(cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
-	return helm.Exec(args...)
+func (shell DiffShellRunner) ExecuteStdInDiff(isDiff bool, cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
+	return helm.Exec(isDiff, args...)
 }
 
 func Output(c *exec.Cmd, logWriterGenerators ...*logWriterGenerator) ([]byte, error) {
