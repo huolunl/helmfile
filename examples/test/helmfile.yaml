@@ -23,6 +23,7 @@ releases:
   - name: foo    # Release name
     namespace: default   # Release namespace
     chart: nika/foo # Chart name
+    version: 0.1.4
     values:
       - value.yaml.gotmpl
 
