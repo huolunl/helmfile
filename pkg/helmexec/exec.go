@@ -35,6 +35,7 @@ type execer struct {
 	decryptedSecrets     map[string]*decryptedSecret
 	writeTempFile        func([]byte) (string, error)
 	writer               io.Writer
+	description          string
 }
 
 func NewLogger(writer io.Writer, logLevel string) *zap.SugaredLogger {
@@ -87,7 +88,7 @@ func getHelmVersion(helmBinary string, runner Runner) (semver.Version, error) {
 }
 
 // New for running helm commands
-func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, writer io.Writer, extra ...string) *execer {
+func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runner Runner, writer io.Writer, description string, extra ...string) *execer {
 	// TODO: proper error handling
 	version, err := getHelmVersion(helmBinary, runner)
 	if err != nil {
@@ -102,6 +103,7 @@ func New(helmBinary string, logger *zap.SugaredLogger, kubeContext string, runne
 		decryptedSecrets: make(map[string]*decryptedSecret),
 		extra:            extra,
 		writer:           writer,
+		description:      description,
 	}
 }
 
@@ -211,7 +213,7 @@ func (helm *execer) SyncRelease(context HelmContext, name, chart string, flags .
 	} else {
 		env["HELM_TILLER_HISTORY_MAX"] = strconv.Itoa(context.HistoryMax)
 	}
-
+	flags = append(flags, "--description", helm.description)
 	out, err := helm.exec(append(append(preArgs, "upgrade", "--install", "--reset-values", name, chart), flags...), env)
 	helm.write(nil, out)
 	return err

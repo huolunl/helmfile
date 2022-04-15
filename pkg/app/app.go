@@ -46,6 +46,7 @@ type App struct {
 	abs               func(string) (string, error)
 	fileExistsAt      func(string) bool
 	directoryExistsAt func(string) bool
+	Description       string
 
 	getwd func() (string, error)
 	chdir func(string) error
@@ -88,7 +89,7 @@ func New(conf ConfigProvider) *App {
 		//}),
 	})
 }
-func NewWithHelmExtra(conf ConfigProvider, writer io.Writer, extra ...string) *App {
+func NewWithHelmExtra(conf ConfigProvider, writer io.Writer, Description string, extra ...string) *App {
 	return Init(&App{
 		OverrideKubeContext: conf.KubeContext(),
 		OverrideHelmBinary:  conf.HelmBinary(),
@@ -104,8 +105,9 @@ func NewWithHelmExtra(conf ConfigProvider, writer io.Writer, extra ...string) *A
 		//helmExecer: helmexec.New(conf.HelmBinary(), conf.Logger(), conf.KubeContext(), &helmexec.ShellRunner{
 		//	Logger: conf.Logger(),
 		//}),
-		Extra:  extra,
-		Writer: writer,
+		Extra:       extra,
+		Writer:      writer,
+		Description: Description,
 	})
 }
 
@@ -769,7 +771,7 @@ func (a *App) getHelm(st *state.HelmState) helmexec.Interface {
 	if _, ok := a.helms[key]; !ok {
 		a.helms[key] = helmexec.New(bin, a.Logger, kubectx, &helmexec.ShellRunner{
 			Logger: a.Logger,
-		}, a.Writer, a.Extra...)
+		}, a.Writer, a.Description, a.Extra...)
 	}
 
 	return a.helms[key]

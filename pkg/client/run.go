@@ -39,17 +39,19 @@ func configureLogging(c *cli.Context) error {
 }
 
 const (
-	HelmExtra = "Helm_Extra"
-	AppName   = "helmfile"
+	HelmExtra   = "Helm_Extra"
+	AppName     = "helmfile"
+	Description = "Description"
 )
 
-func exec(extra []string, args ...string) ([]byte, error) {
+func exec(extra []string, description string, args ...string) ([]byte, error) {
 	os.Args = args
 	writer := &bytes.Buffer{}
 	cliApp := cli.NewApp()
 	cliApp.Writer = writer
 	cliApp.Metadata = map[string]interface{}{
-		HelmExtra: extra,
+		HelmExtra:   extra,
+		Description: description,
 	}
 	cliApp.Name = AppName
 	cliApp.Usage = ""
@@ -739,8 +741,8 @@ func exec(extra []string, args ...string) ([]byte, error) {
 	return writer.Bytes(), err
 }
 
-func Exec(meta []string, args ...string) ([]byte, error) {
-	return exec(meta, args...)
+func Exec(meta []string, Description string, args ...string) ([]byte, error) {
+	return exec(meta, Description, args...)
 }
 
 type configImpl struct {
@@ -1017,7 +1019,11 @@ func action(do func(*app.App, configImpl) error) func(*cli.Context) error {
 		if !ok {
 			log.Println("no helm extra")
 		}
-		a := app.NewWithHelmExtra(conf, conf.c.App.Writer, helmExtra...)
+		Description, ok := conf.c.App.Metadata[Description].(string)
+		if !ok {
+			log.Println("no helm Description")
+		}
+		a := app.NewWithHelmExtra(conf, conf.c.App.Writer, Description, helmExtra...)
 		if err := do(a, conf); err != nil {
 			if err != nil {
 				//todo err type

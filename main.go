@@ -38,6 +38,7 @@ func configureLogging(c *cli.Context) error {
 }
 
 const HelmExtra = "Helm_Extra"
+const Description = "Description"
 
 func main() {
 
@@ -1013,7 +1014,11 @@ func action(do func(*app.App, configImpl) error) func(*cli.Context) error {
 		if !ok {
 			log.Println("no helm extra")
 		}
-		a := app.NewWithHelmExtra(conf, implCtx.App.Writer, helmExtra...)
+		Description, ok := conf.c.App.Metadata[Description].(string)
+		if !ok {
+			log.Println("no helm Description")
+		}
+		a := app.NewWithHelmExtra(conf, implCtx.App.Writer, Description, helmExtra...)
 		if err := do(a, conf); err != nil {
 			return toCliError(implCtx, err)
 		}
