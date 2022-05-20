@@ -7,7 +7,6 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/aryann/difflib v0.0.0-20170710044230-e206f873d14a
 	github.com/davecgh/go-spew v1.1.1
-	github.com/frankban/quicktest v1.11.2 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32
 	github.com/go-test/deep v1.0.7
 	github.com/golang/mock v1.5.0
@@ -17,7 +16,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.6.3 // indirect
 	github.com/hashicorp/go-version v1.2.1
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
-	github.com/huolunl/helm/v3 v3.6.10
+	github.com/huolunl/helm/v3 v3.6.11-0.20220516093122-04755bfc97c8
 	github.com/imdario/mergo v0.3.11
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kylelemons/godebug v1.1.0
