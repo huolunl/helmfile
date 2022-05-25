@@ -16,7 +16,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.6.3 // indirect
 	github.com/hashicorp/go-version v1.2.1
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
-	github.com/huolunl/helm/v3 v3.6.11-0.20220516093122-04755bfc97c8
+	github.com/huolunl/helm/v3 v3.6.12
 	github.com/imdario/mergo v0.3.11
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kylelemons/godebug v1.1.0
@@ -39,5 +39,4 @@ require (
 	gotest.tools v2.2.0+incompatible
 	gotest.tools/v3 v3.0.3
 	k8s.io/apimachinery v0.21.0
-	rsc.io/letsencrypt v0.0.3 // indirect
 )
