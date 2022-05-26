@@ -10,7 +10,9 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/huolunl/helm/v3/pkg/diff"
 	"github.com/huolunl/helm/v3/pkg/helm"
+
 	"go.uber.org/zap"
 )
 
@@ -38,7 +40,8 @@ func (shell ShellRunner) Execute(cmd string, args []string, env map[string]strin
 	return helm.Exec(false, args...)
 }
 func (shell DiffShellRunner) ExecuteDiff(isDiff bool, cmd string, args []string, env map[string]string) ([]byte, error) {
-	return helm.Exec(isDiff, args...)
+
+	return diff.Exec(isDiff, args...)
 }
 
 // Execute a shell command
@@ -48,6 +51,7 @@ func (shell ShellRunner) ExecuteStdIn(cmd string, args []string, env map[string]
 
 // Execute a shell command
 func (shell DiffShellRunner) ExecuteStdInDiff(isDiff bool, cmd string, args []string, env map[string]string, stdin io.Reader) ([]byte, error) {
+
 	return helm.Exec(isDiff, args...)
 }
 
