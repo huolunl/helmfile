@@ -643,10 +643,6 @@ github.com/hudl/fargo v1.3.0/go.mod h1:y3CKSmjA+wD2gak7sUSXTAoopbhU08POFhmITJgmK
 github.com/huolunl/helm-diff/v3 v3.0.0-20220516082011-51046feda4dd h1:8ZcezZ/haVsg3aBcrb10L2/SxlujKw1R+S6L71sWfV4=
 github.com/huolunl/helm-diff/v3 v3.0.0-20220516082011-51046feda4dd/go.mod h1:wKGVKl62/bRIFu+4PI3ZabZyGUD2ExRRLjTG360ERaU=
 github.com/huolunl/helm/v3 v3.6.10/go.mod h1:H0Sj4ABe8P+As1D5HktOk7WfktdZEX9EW8tXTt1z7tI=
-github.com/huolunl/helm/v3 v3.6.11-0.20220516093122-04755bfc97c8 h1:5iDOzqi3dl/wvEL6RR2u5dnrfQcYbct4Cd93W7UyiWY=
-github.com/huolunl/helm/v3 v3.6.11-0.20220516093122-04755bfc97c8/go.mod h1:N/LNTfT4kdqAvWmK1395GZlKgQfn6eM41HEd+LeXIcw=
-github.com/huolunl/helm/v3 v3.6.12 h1:DPOjZAa+aBmh/B2/20MjTCbsopDI+qrAxkB7XcCKDAg=
-github.com/huolunl/helm/v3 v3.6.12/go.mod h1:f94c3ond2W3NyhhK+8dgLzYBtxoHrrLbhNhf7zTBfwk=
 github.com/huolunl/helm/v3 v3.6.13-0.20220525122742-ee8902b4b776 h1:zNdXcOw4Y2eD1ZWRnQUpdaNzt4CTUekDkUrQPFr4zqw=
 github.com/huolunl/helm/v3 v3.6.13-0.20220525122742-ee8902b4b776/go.mod h1:f94c3ond2W3NyhhK+8dgLzYBtxoHrrLbhNhf7zTBfwk=
 github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
@@ -1064,7 +1060,6 @@ github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50 h1:hlE8//ciYMzt
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f h1:ERexzlUfuTvpE74urLSbIQW0Z/6hF9t8U4NsJLaioAY=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-github.com/zhangfane/helm-diff/v3 v3.0.0-20220516031638-448da982def5/go.mod h1:I29YoIoS/W71ROZRL2xg9l2NC+fUEiIK2UUIFEopc9I=
 github.com/ziutek/mymysql v1.5.4 h1:GB0qdRGsTwQSBVYuVShFBKaXSnSnYYC2d9knnE1LHFs=
 github.com/ziutek/mymysql v1.5.4/go.mod h1:LMSpPZ6DbqWFxNCHW77HeMg9I646SAhApZ/wKdgO/C0=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=

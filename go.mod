@@ -16,7 +16,6 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.6.3 // indirect
 	github.com/hashicorp/go-version v1.2.1
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
-	github.com/huolunl/helm-diff/v3 v3.0.0-20220516082011-51046feda4dd // indirect
 	github.com/huolunl/helm/v3 v3.6.13-0.20220525122742-ee8902b4b776
 	github.com/imdario/mergo v0.3.11
 	github.com/jessevdk/go-flags v1.4.0
