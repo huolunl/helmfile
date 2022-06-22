@@ -205,6 +205,7 @@ func (a *App) Diff(c DiffConfigProvider) error {
 
 		if msg != nil {
 			a.Logger.Info(*msg)
+			a.Writer.Write([]byte(*msg))
 		}
 
 		if prepErr != nil {
@@ -508,6 +509,9 @@ func (a *App) Test(c TestConfigProvider) error {
 			a.Logger.Warnf("warn: requested cleanup will not be applied. " +
 				"To clean up test resources with Helm 3, you have to remove them manually " +
 				"or set helm.sh/hook-delete-policy\n")
+			a.Writer.Write([]byte("warn: requested cleanup will not be applied. " +
+				"To clean up test resources with Helm 3, you have to remove them manually " +
+				"or set helm.sh/hook-delete-policy\n"))
 		}
 
 		err := run.withPreparedCharts("test", state.ChartPrepareOptions{
@@ -669,6 +673,7 @@ func (a *App) within(dir string, do func() error) error {
 	if chdirBackErr := a.chdir(prev); chdirBackErr != nil {
 		if appErr != nil {
 			a.Logger.Warnf("%v", appErr)
+			a.Writer.Write([]byte(appErr.Error()))
 		}
 		return fmt.Errorf("failed chaging working directory back to \"%s\": %v", prev, chdirBackErr)
 	}
@@ -1322,6 +1327,7 @@ func (a *App) apply(r *Run, c ApplyConfigProvider) (bool, bool, []error) {
 		r := releasesWithNoChange[id]
 		if _, err := st.TriggerCleanupEvent(&r, "apply"); err != nil {
 			a.Logger.Warnf("warn: %v\n", err)
+			a.Writer.Write([]byte(fmt.Sprintf("warn: %v\n", err)))
 		}
 	}
 
@@ -1450,6 +1456,7 @@ func (a *App) delete(r *Run, purge bool, c DestroyConfigProvider) (bool, []error
 		r := releasesWithNoChange[id]
 		if _, err := st.TriggerCleanupEvent(&r, "delete"); err != nil {
 			a.Logger.Warnf("warn: %v\n", err)
+			a.Writer.Write([]byte(fmt.Sprintf("warn: %v\n", err)))
 		}
 	}
 
@@ -1743,6 +1750,7 @@ func (a *App) sync(r *Run, c SyncConfigProvider) (bool, []error) {
 		r := releasesWithNoChange[id]
 		if _, err := st.TriggerCleanupEvent(&r, "sync"); err != nil {
 			a.Logger.Warnf("warn: %v\n", err)
+			a.Writer.Write([]byte(fmt.Sprintf("warn: %v\n", err)))
 		}
 	}
 
@@ -1761,6 +1769,7 @@ func (a *App) sync(r *Run, c SyncConfigProvider) (bool, []error) {
 `, strings.Join(names, "\n"))
 
 	a.Logger.Info(infoMsg)
+	a.Writer.Write([]byte(infoMsg))
 
 	var errs []error
 
