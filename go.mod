@@ -18,7 +18,6 @@ require (
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
 	github.com/huolunl/helm/v3 v3.6.15
 	github.com/huolunl/helm-diff/v3 v3.0.1
-	github.com/huolunl/helm/v3 v3.6.14
 	github.com/imdario/mergo v0.3.11
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kylelemons/godebug v1.1.0
