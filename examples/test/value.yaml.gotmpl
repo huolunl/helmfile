@@ -1,3 +1,1 @@
-service:
-  port: {{ .Values.service.port | quote}}
-replicaCount: {{ .Values.replicaCount | quote}}
+{{ .Values | toYaml }}
