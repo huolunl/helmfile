@@ -230,7 +230,7 @@ func (helm *execer) ReleaseStatus(context HelmContext, name string, flags ...str
 }
 
 func (helm *execer) List(context HelmContext, filter string, flags ...string) (string, error) {
-	return "", nil
+	//return "", nil
 	helm.logger.Infof("Listing releases matching %v", filter)
 	preArgs := context.GetTillerlessArgs(helm)
 	env := context.getTillerlessEnv()

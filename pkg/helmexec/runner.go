@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -38,11 +37,9 @@ type ShellRunner struct {
 
 // Execute a shell command
 func (shell ShellRunner) Execute(cmd string, args []string, env map[string]string) ([]byte, error) {
-	log.Println(args)
 	return helm.Exec(false, args...)
 }
 func (shell DiffShellRunner) ExecuteDiff(isDiff bool, cmd string, args []string, env map[string]string) ([]byte, error) {
-	log.Println(args)
 	return diff.Exec(isDiff, args...)
 }
 
