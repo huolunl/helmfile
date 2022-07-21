@@ -645,8 +645,8 @@ github.com/huolunl/helm-diff/v3 v3.0.1 h1:sHkQZHWcf9jschTfnjiCTtZYLWhF6FXX/yB1/E
 github.com/huolunl/helm-diff/v3 v3.0.1/go.mod h1:X8CNVwkZ3J3eCOiljjzDGkmuI+sGfnwNjIJN1VJDk9s=
 github.com/huolunl/helm/v3 v3.6.10/go.mod h1:H0Sj4ABe8P+As1D5HktOk7WfktdZEX9EW8tXTt1z7tI=
 github.com/huolunl/helm/v3 v3.6.13-0.20220525122742-ee8902b4b776/go.mod h1:f94c3ond2W3NyhhK+8dgLzYBtxoHrrLbhNhf7zTBfwk=
-github.com/huolunl/helm/v3 v3.6.14 h1:+gYJaH9lTEt4BFjKNdTIZN6lK5lTMS8z76xafVWvNOU=
-github.com/huolunl/helm/v3 v3.6.14/go.mod h1:A8fzINJX3DDt0/eKRb8W4CFW5+n4MDpqAjkSWLvOfmw=
+github.com/huolunl/helm/v3 v3.6.15 h1:T+7eRiouz7Pqy4PwAGDE+MYuTkwfPUpZ9wgHuL5NCFA=
+github.com/huolunl/helm/v3 v3.6.15/go.mod h1:A8fzINJX3DDt0/eKRb8W4CFW5+n4MDpqAjkSWLvOfmw=
 github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/imdario/mergo v0.3.5/go.mod h1:2EnlNZ0deacrJVfApfmtdGgDfMuh/nq6Ok1EcJh5FfA=
